@@ -2,17 +2,19 @@ import React, { useEffect, useState, useRef } from "react";
 import Vimeo from "@u-wave/react-vimeo";
 import VideoForm from "./VideoForm";
 import VideoControls from "./VideoControls";
+import { nanoid } from "nanoid";
 
 function VideoStreamer() {
     const [videoFormConfig, setVideoFormConfig] = useState({
-        videoUrl: "", // Set default video URL to empty string
-        isloadDisabled: true, // Set default load button state to disabled
+        videoUrl: "https://vimeo.com/712561471", // Set default video URL to empty string
     });
 
     const [streamerConfig, setStreamerConfig] = useState({
-        id: "", // Set default video ID to empty string
-        videoId: "712561471", // Set default video to 712561471
+        id: nanoid(), // Set default video ID to empty string
+        video: "https://vimeo.com/712561471", // Set default video to 712561471
         quality: "1080", // Set default quality to 1080p
+        start: 0, // Set default start time to 0
+        loop: true, // Set default loop to true
         paused: true, // Set default state to paused
     });
 
@@ -30,6 +32,15 @@ function VideoStreamer() {
             return {
                 ...prevState,
                 paused: true,
+            };
+        });
+    }
+
+    function toggleVideoLoop() {
+        setStreamerConfig(prevState => {
+            return {
+                ...prevState,
+                loop: !prevState.loop,
             };
         });
     }
@@ -52,9 +63,10 @@ function VideoStreamer() {
         setStreamerConfig(prevState => ({
             ...prevState,
             // Generate a random ID to be used as for the key prop to remount vimeo player
-            id: Math.random().toString(),
-            videoId: videoFormConfig.videoUrl,
+            id: nanoid(),
+            video: videoFormConfig.videoUrl,
             quality: streamerConfig.quality,
+            start: 0,
             paused: true,
         }));
     }
@@ -65,9 +77,16 @@ function VideoStreamer() {
         // Update the streamer config.
         setStreamerConfig(prevState => ({
             ...prevState,
-            id: Math.random().toString(),
+            id: nanoid(),
             quality: quality,
-            paused: true,
+        }));
+    }
+
+    function handleVideoTimeUpdate(event) {
+        // Keep track of the current time of the video.
+        setStreamerConfig(prevState => ({
+            ...prevState,
+            start: event.seconds,
         }));
     }
 
@@ -82,14 +101,21 @@ function VideoStreamer() {
                 /* Remount the Vimeo player when the ID changes, 
                  so to ensure new video quality gets applied */
                 key={streamerConfig.id}
-                video={streamerConfig.videoId}
+                video={streamerConfig.video}
                 quality={streamerConfig.quality}
                 paused={streamerConfig.paused}
-                responsive
+                start={streamerConfig.start}
+                autoplay={!streamerConfig.paused}
+                loop={streamerConfig.loop}
+                responsive={true}
+                onTimeUpdate={handleVideoTimeUpdate}
+                onEnd={setVideoPause}
             />
             <VideoControls
+                streamerConfig={streamerConfig}
                 setVideoPlay={setVideoPlay}
                 setVideoPause={setVideoPause}
+                toggleVideoLoop={toggleVideoLoop}
                 handleVideoQualityChange={handleVideoQualityChange}
             />
         </div>

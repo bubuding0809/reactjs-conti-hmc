@@ -10,11 +10,9 @@ function VideoForm(props) {
                 value={props.videoFormConfig.videoUrl}
             />
 
-            <input
-                disabled={props.videoFormConfig.isloadDisabled}
-                type="submit"
-                value="load"
-            />
+            <button disabled={!props.videoFormConfig.videoUrl} type="submit">
+                Load
+            </button>
         </form>
     );
 }

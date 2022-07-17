@@ -1,45 +1,40 @@
 import React from "react";
 
 function VideoControls(props) {
+    const videoQualityOptions = ["1440", "1080", "720", "360", "240"];
+
+    const qualityOptions = videoQualityOptions.map(quality => {
+        return (
+            <div className="video-options">
+                <input
+                    key={quality}
+                    id={`video-quality-${quality}`}
+                    type="radio"
+                    value={quality}
+                    onChange={props.handleVideoQualityChange}
+                    checked={props.streamerConfig.quality === quality}
+                />
+                <label htmlFor={`video-quality-${quality}`}>
+                    {`${quality}p`}
+                </label>
+            </div>
+        );
+    });
+
     return (
-        <div>
+        <div className="vimeo-controls">
             <button onClick={props.setVideoPlay}>Play</button>
             <button onClick={props.setVideoPause}>Pause</button>
-            <input
-                id="quality-1080"
-                type="radio"
-                value="1080"
-                name="quality"
-                onChange={props.handleVideoQualityChange}
-            />
-            <label htmlFor="quality-1080">1080p</label>
-
-            <input
-                id="quality-720"
-                type="radio"
-                value="720"
-                name="quality"
-                onChange={props.handleVideoQualityChange}
-            />
-            <label htmlFor="quality-720">720p</label>
-
-            <input
-                id="quality-360"
-                type="radio"
-                value="360"
-                name="quality"
-                onChange={props.handleVideoQualityChange}
-            />
-            <label htmlFor="quality-360">360p</label>
-
-            <input
-                id="quality-240"
-                type="radio"
-                value="240"
-                name="quality"
-                onChange={props.handleVideoQualityChange}
-            />
-            <label htmlFor="quality-240">240p</label>
+            <div className="video-options">
+                <input
+                    id="loop-video"
+                    type="checkbox"
+                    onChange={props.toggleVideoLoop}
+                    checked={props.streamerConfig.loop}
+                />
+                <label htmlFor="loop-video">Loop</label>
+            </div>
+            {qualityOptions}
         </div>
     );
 }
