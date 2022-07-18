@@ -1,7 +1,9 @@
+import { Typography } from "@mui/material";
+
 export default function Headers() {
-  return (
-    <div>
-      <h1>HMC Panel App</h1>
-    </div>
-  );
+    return (
+        <div>
+            <Typography variant={"h2"}>Conti HMC App</Typography>
+        </div>
+    );
 }
