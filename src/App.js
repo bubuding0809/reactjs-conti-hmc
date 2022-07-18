@@ -1,11 +1,11 @@
 import "./App.css";
-import React, { useState, useRef, useEffect } from "react";
+import Header from "./components/Header";
 import VideoStreamer from "./components/VideoStreamer";
 
 function App() {
     return (
         <div>
-            <h1>HMC Tester</h1>
+            <Header />
             <hr />
             <VideoStreamer />
         </div>
