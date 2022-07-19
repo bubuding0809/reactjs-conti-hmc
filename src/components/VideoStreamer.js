@@ -3,6 +3,7 @@ import Vimeo from "@u-wave/react-vimeo";
 import VideoForm from "./VideoForm";
 import VideoControls from "./VideoControls";
 import { nanoid } from "nanoid";
+import { Box } from "@mui/material";
 
 function VideoStreamer() {
     const [videoFormConfig, setVideoFormConfig] = useState({
@@ -16,22 +17,14 @@ function VideoStreamer() {
         start: 0, // Set default start time to 0
         loop: true, // Set default loop to true
         paused: true, // Set default state to paused
+        volume: 0, // Set default state to muted
     });
 
-    function setVideoPlay() {
+    function toggleVideoPlay() {
         setStreamerConfig(prevState => {
             return {
                 ...prevState,
-                paused: false,
-            };
-        });
-    }
-
-    function setVideoPause() {
-        setStreamerConfig(prevState => {
-            return {
-                ...prevState,
-                paused: true,
+                paused: !prevState.paused,
             };
         });
     }
@@ -41,6 +34,15 @@ function VideoStreamer() {
             return {
                 ...prevState,
                 loop: !prevState.loop,
+            };
+        });
+    }
+
+    function toggleVideoMute() {
+        setStreamerConfig(prevState => {
+            return {
+                ...prevState,
+                volume: prevState.volume === 0 ? 0.5 : 0,
             };
         });
     }
@@ -91,7 +93,7 @@ function VideoStreamer() {
     }
 
     return (
-        <div>
+        <Box p={1}>
             <VideoForm
                 videoFormConfig={videoFormConfig}
                 handleFormChange={handleFormChange}
@@ -107,18 +109,25 @@ function VideoStreamer() {
                 start={streamerConfig.start}
                 autoplay={!streamerConfig.paused}
                 loop={streamerConfig.loop}
-                responsive={true}
+                volume={streamerConfig.volume}
                 onTimeUpdate={handleVideoTimeUpdate}
-                onEnd={setVideoPause}
+                onEnd={() =>
+                    setStreamerConfig(prevState => ({
+                        ...prevState,
+                        paused: true,
+                    }))
+                }
+                controls={false}
+                responsive={true}
             />
             <VideoControls
                 streamerConfig={streamerConfig}
-                setVideoPlay={setVideoPlay}
-                setVideoPause={setVideoPause}
+                toggleVideoPlay={toggleVideoPlay}
                 toggleVideoLoop={toggleVideoLoop}
+                toggleVideoMute={toggleVideoMute}
                 handleVideoQualityChange={handleVideoQualityChange}
             />
-        </div>
+        </Box>
     );
 }
 

@@ -1,9 +1,5 @@
-import { Typography } from "@mui/material";
+import ResponsiveAppBar from "./ResponsiveAppBar";
 
 export default function Headers() {
-    return (
-        <div>
-            <Typography variant={"h2"}>Conti HMC App</Typography>
-        </div>
-    );
+    return <ResponsiveAppBar />;
 }

@@ -1,33 +1,51 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Grid, InputAdornment, IconButton } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import YoutubeSearchedForIcon from "@mui/icons-material/YoutubeSearchedFor";
 
 function VideoForm(props) {
     return (
-        <form onSubmit={props.handleFormSubmit}>
-            <TextField
-                name="videoUrl"
-                type="text"
-                label="Vimeo video URL"
-                variant="outlined"
-                size="small"
-                error={!props.videoFormConfig.videoUrl}
-                helperText={
-                    props.videoFormConfig.videoUrl ? "" : "Please enter a URL"
-                }
-                onChange={props.handleFormChange}
-                value={props.videoFormConfig.videoUrl}
-            />
-
-            <Button
-                variant="contained"
-                color="primary"
-                size="medium"
-                disabled={!props.videoFormConfig.videoUrl}
-            >
-                Load
-            </Button>
-        </form>
+        <Grid
+            container
+            spacing={1}
+            my={1}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+        >
+            <Grid item xs>
+                <TextField
+                    name="videoUrl"
+                    type="text"
+                    label="Vimeo video URL"
+                    variant="outlined"
+                    size="medium"
+                    error={!props.videoFormConfig.videoUrl}
+                    helperText={
+                        props.videoFormConfig.videoUrl
+                            ? ""
+                            : "Please enter a URL"
+                    }
+                    onChange={props.handleFormChange}
+                    value={props.videoFormConfig.videoUrl}
+                    fullWidth
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    id="video-search-button"
+                                    edge="end"
+                                    color="primary"
+                                    disabled={!props.videoFormConfig.videoUrl}
+                                    onClick={props.handleFormSubmit}
+                                >
+                                    <YoutubeSearchedForIcon />
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+            </Grid>
+        </Grid>
     );
 }
 
