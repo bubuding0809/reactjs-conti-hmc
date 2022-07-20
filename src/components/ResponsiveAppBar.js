@@ -20,10 +20,10 @@ const ResponsiveAppBar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-    const handleOpenNavMenu = event => {
+    const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
-    const handleOpenUserMenu = event => {
+    const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
 
@@ -60,6 +60,7 @@ const ResponsiveAppBar = () => {
                         LOGO
                     </Typography>
 
+                    {/* Burger menu that is displayed for medium and below */}
                     <Box
                         sx={{
                             flexGrow: 1,
@@ -94,7 +95,7 @@ const ResponsiveAppBar = () => {
                                 display: { xs: "block", md: "none" },
                             }}
                         >
-                            {pages.map(page => (
+                            {pages.map((page) => (
                                 <MenuItem
                                     key={page}
                                     onClick={handleCloseNavMenu}
@@ -127,13 +128,15 @@ const ResponsiveAppBar = () => {
                     >
                         LOGO
                     </Typography>
+
+                    {/* App bar links for md display and larger */}
                     <Box
                         sx={{
                             flexGrow: 1,
                             display: { xs: "none", md: "flex" },
                         }}
                     >
-                        {pages.map(page => (
+                        {pages.map((page) => (
                             <Button
                                 key={page}
                                 onClick={handleCloseNavMenu}
@@ -144,6 +147,7 @@ const ResponsiveAppBar = () => {
                         ))}
                     </Box>
 
+                    {/* App bar user settings */}
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton
@@ -172,7 +176,7 @@ const ResponsiveAppBar = () => {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map(setting => (
+                            {settings.map((setting) => (
                                 <MenuItem
                                     key={setting}
                                     onClick={handleCloseUserMenu}

@@ -1,7 +1,15 @@
 import { Fab, Grid, TextField } from "@mui/material";
 import CloudDownloadSharpIcon from "@mui/icons-material/CloudDownloadSharp";
+import { useState } from "react";
 
 export default function FileDownloder() {
+    const [fileDownloadLink, setFileDownloadLink] = useState("");
+
+    function handleDownloadLinkChange(event) {
+        const { value } = event.target;
+        setFileDownloadLink(value);
+    }
+
     return (
         <Grid
             container
@@ -13,13 +21,22 @@ export default function FileDownloder() {
         >
             <Grid item xs mr={2}>
                 <TextField
-                    label="Download from path"
+                    id="file-download-field"
+                    label="Source API"
                     variant="outlined"
                     fullWidth
+                    value={fileDownloadLink}
+                    onChange={handleDownloadLinkChange}
                 />
             </Grid>
             <Grid item xs="auto">
-                <Fab color="secondary">
+                <Fab
+                    id="file-download-button"
+                    color="secondary"
+                    href={fileDownloadLink}
+                    download
+                    disabled={!fileDownloadLink}
+                >
                     <CloudDownloadSharpIcon />
                 </Fab>
             </Grid>
