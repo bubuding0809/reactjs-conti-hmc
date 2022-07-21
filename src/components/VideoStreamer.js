@@ -1,134 +1,133 @@
-import React, { useEffect, useState, useRef } from "react";
-import Vimeo from "@u-wave/react-vimeo";
+import React, { useState, useRef } from "react";
 import VideoForm from "./VideoForm";
 import VideoControls from "./VideoControls";
-import { nanoid } from "nanoid";
-import { Box } from "@mui/material";
+import ReactPlayer from "react-player";
+import { Box, Stack } from "@mui/material";
 
 function VideoStreamer() {
-    const [videoFormConfig, setVideoFormConfig] = useState({
-        videoUrl: "https://vimeo.com/712561471", // Set default video URL to empty string
-    });
+  const playerRef = useRef();
 
-    const [streamerConfig, setStreamerConfig] = useState({
-        id: nanoid(), // Set default video ID to empty string
-        video: "https://vimeo.com/712561471", // Set default video to 712561471
-        quality: "1080", // Set default quality to 1080p
-        start: 0, // Set default start time to 0
-        loop: true, // Set default loop to true
-        paused: true, // Set default state to paused
-        volume: 0, // Set default state to muted
-    });
+  const [playerUrl, setPlayerUrl] = useState("https://vimeo.com/712561471");
 
-    function toggleVideoPlay() {
-        setStreamerConfig(prevState => {
-            return {
-                ...prevState,
-                paused: !prevState.paused,
-            };
-        });
-    }
+  const [playerState, setPlayerState] = useState({
+    url: "https://vimeo.com/712561471",
+    playing: false,
+    controls: false,
+    played: 0,
+    volume: 0.5,
+    muted: true,
+    loop: true,
+    playbackRate: 1,
+    seeking: false,
+  });
 
-    function toggleVideoLoop() {
-        setStreamerConfig(prevState => {
-            return {
-                ...prevState,
-                loop: !prevState.loop,
-            };
-        });
-    }
+  const handleForm = {
+    playerUrl,
+    setPlayerUrl,
+    handleLoad: () => {
+      setPlayerState((prevState) => ({
+        ...prevState,
+        url: playerUrl,
+      }));
+    },
+  };
 
-    function toggleVideoMute() {
-        setStreamerConfig(prevState => {
-            return {
-                ...prevState,
-                volume: prevState.volume === 0 ? 0.5 : 0,
-            };
-        });
-    }
+  const handleVideo = {
+    style: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      backgroundColor: "black",
+    },
 
-    function handleFormChange(event) {
-        const { name, value } = event.target;
+    width: "100%",
 
-        // Update the form state.
-        setVideoFormConfig(prevState => ({
-            ...prevState,
-            [name]: value,
-            isloadDisabled: value ? false : true, // Disable load button if no video URL is entered
+    height: "100%",
+
+    ref: playerRef,
+
+    onEnded: () => {
+      setPlayerState((prevState) => ({
+        ...prevState,
+        playing: prevState.loop,
+      }));
+    },
+
+    onProgress: (state) => {
+      if (!playerState.seeking) {
+        setPlayerState((prevState) => ({
+          ...prevState,
+          played: state.played * 100,
         }));
-    }
+      }
+    },
+  };
 
-    function handleFormSubmit(event) {
-        event.preventDefault();
+  const handleControls = {
+    playerRef,
 
-        // Update the streamer config.
-        setStreamerConfig(prevState => ({
-            ...prevState,
-            // Generate a random ID to be used as for the key prop to remount vimeo player
-            id: nanoid(),
-            video: videoFormConfig.videoUrl,
-            quality: streamerConfig.quality,
-            start: 0,
-            paused: true,
-        }));
-    }
+    toggleVideoPlay: () => {
+      setPlayerState((prevState) => ({
+        ...prevState,
+        playing: !prevState.playing,
+      }));
+    },
 
-    function handleVideoQualityChange(event) {
-        const quality = event.target.value;
+    toggleVideoLoop: () => {
+      setPlayerState((prevState) => ({
+        ...prevState,
+        loop: !prevState.loop,
+      }));
+    },
 
-        // Update the streamer config.
-        setStreamerConfig(prevState => ({
-            ...prevState,
-            id: nanoid(),
-            quality: quality,
-        }));
-    }
+    toggleVideoMute: () => {
+      setPlayerState((prevState) => ({
+        ...prevState,
+        muted: !prevState.muted,
+      }));
+    },
 
-    function handleVideoTimeUpdate(event) {
-        // Keep track of the current time of the video.
-        setStreamerConfig(prevState => ({
-            ...prevState,
-            start: event.seconds,
-        }));
-    }
+    handleSeekChange: (e) => {
+      setPlayerState((prevState) => ({
+        ...prevState,
+        played: parseFloat(e.target.value),
+      }));
+      playerRef.current.seekTo(parseFloat(e.target.value) / 100, "fraction");
+    },
 
-    return (
-        <Box p={1}>
-            <VideoForm
-                videoFormConfig={videoFormConfig}
-                handleFormChange={handleFormChange}
-                handleFormSubmit={handleFormSubmit}
-            />
-            <Vimeo
-                /* Remount the Vimeo player when the ID changes, 
-                 so to ensure new video quality gets applied */
-                key={streamerConfig.id}
-                video={streamerConfig.video}
-                quality={streamerConfig.quality}
-                paused={streamerConfig.paused}
-                start={streamerConfig.start}
-                autoplay={!streamerConfig.paused}
-                loop={streamerConfig.loop}
-                volume={streamerConfig.volume}
-                onTimeUpdate={handleVideoTimeUpdate}
-                onEnd={() =>
-                    setStreamerConfig(prevState => ({
-                        ...prevState,
-                        paused: true,
-                    }))
-                }
-                controls={false}
-                responsive={true}
-            />
-            <VideoControls
-                streamerConfig={streamerConfig}
-                toggleVideoPlay={toggleVideoPlay}
-                toggleVideoLoop={toggleVideoLoop}
-                toggleVideoMute={toggleVideoMute}
-                handleVideoQualityChange={handleVideoQualityChange}
-            />
+    handleSeekStart(e) {
+      console.log("seeking", e.target);
+      setPlayerState((prevState) => ({
+        ...prevState,
+        seeking: true,
+      }));
+    },
+
+    handleSeekCommitted: (e) => {
+      console.log("stop seeking");
+      setPlayerState((prevState) => ({
+        ...prevState,
+        seeking: false,
+      }));
+    },
+  };
+
+  return (
+    <Box p={3}>
+      <Stack spacing={1}>
+        <VideoForm {...handleForm} />
+        <Box
+          sx={{
+            position: "relative",
+            paddingTop: "56.25%",
+          }}
+        >
+          <ReactPlayer {...playerState} {...handleVideo} />
         </Box>
-    );
+        <VideoControls playerState={playerState} {...handleControls} />
+      </Stack>
+    </Box>
+  );
 }
 
 export default VideoStreamer;
