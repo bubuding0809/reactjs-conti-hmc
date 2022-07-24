@@ -1,4 +1,4 @@
-import { Fab, Grid, Stack, TextField, Typography } from "@mui/material";
+import { Fab, Grid, TextField } from "@mui/material";
 import CallIcon from "@mui/icons-material/Call";
 
 export default function VoiceCaller() {

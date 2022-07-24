@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import {
   Fab,
   Grid,
@@ -7,7 +7,6 @@ import {
   LinearProgress,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import FileInput from "./FileInput";
 
