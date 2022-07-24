@@ -1,14 +1,21 @@
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { Fab, Grid, TextField, Button, Typography } from "@mui/material";
+import {
+    Fab,
+    Grid,
+    TextField,
+    Button,
+    Typography,
+    LinearProgress,
+} from "@mui/material";
 import { useState } from "react";
 import FileInput from "./FileInput";
 import axios from "axios";
 
-const api = "https://run.mocky.io/v3/445f0c6c-2e05-4710-b818-2ddeda7a08a5";
-
 export default function FileDownloder() {
     const [selectedFiles, setSelectedFiles] = useState([]);
-    const [destApi, setDestApi] = useState("");
+    const [destApi, setDestApi] = useState(
+        "https://run.mocky.io/v3/445f0c6c-2e05-4710-b818-2ddeda7a08a5"
+    );
     const [percentage, setPercentage] = useState(0);
 
     const options = {
@@ -19,7 +26,7 @@ export default function FileDownloder() {
                 (progressEvent.loaded * 100) / progressEvent.total
             );
             console.log(`${loaded}/${total}, ${percentCompleted}%`);
-            percentCompleted < 100 && setPercentage(percentCompleted);
+            setPercentage(percentCompleted);
         },
     };
 
@@ -32,13 +39,18 @@ export default function FileDownloder() {
         setSelectedFiles([]);
     }
 
-    function handleFilesUpload() {
-        console.log(selectedFiles[0]);
+    async function handleFilesUpload() {
         const data = new FormData();
         data.append("files", selectedFiles[0]);
-        axios.post(destApi, data, options).then(res => {
-            console.log(res);
-        });
+        try {
+            const response = await axios.post(destApi, data, options);
+            console.log(response);
+        } catch (err) {
+            console.log(err);
+        }
+        setTimeout(() => {
+            setPercentage(0);
+        }, 500);
     }
 
     return (
@@ -77,7 +89,20 @@ export default function FileDownloder() {
                     <CloudUploadIcon />
                 </Fab>
             </Grid>
-            <Typography>{percentage + "%"}</Typography>
+            <Grid
+                item
+                container
+                xs={12}
+                alignItems={"center"}
+                columnSpacing={1}
+            >
+                <Grid item xs>
+                    <LinearProgress variant="determinate" value={percentage} />
+                </Grid>
+                <Grid item xs="auto">
+                    <Typography>{percentage + "%"}</Typography>
+                </Grid>
+            </Grid>
         </Grid>
     );
 }
