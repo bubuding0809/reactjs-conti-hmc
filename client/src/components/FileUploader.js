@@ -7,6 +7,8 @@ import {
   LinearProgress,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import CloseIcon from "@mui/icons-material/Close";
+import { useSnackbar } from "notistack";
 import axios from "axios";
 import FileInput from "./FileInput";
 
@@ -15,6 +17,8 @@ export default function FileDownloder() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [percentage, setPercentage] = useState(0);
+  const [controller, setController] = useState(new AbortController());
+  const { enqueueSnackbar } = useSnackbar();
 
   function handleFileChange(event) {
     const files = [...event.target.files];
@@ -24,6 +28,7 @@ export default function FileDownloder() {
   async function handleFilesUpload() {
     // Configure axios post options
     const options = {
+      signal: controller.signal,
       onUploadProgress: progressEvent => {
         const { loaded, total } = progressEvent;
 
@@ -41,21 +46,46 @@ export default function FileDownloder() {
       data.append("files", file);
     });
 
-    // Post files to server
-    console.log("Uploading files...");
+    enqueueSnackbar("Uploading files...", {
+      variant: "info",
+    });
+
     setIsUploading(true);
+
+    // Post files to server
     try {
       const response = await axios.post(destApi, data, options);
-      console.log(response);
+      setTimeout(() => {
+        setSelectedFiles([]);
+        enqueueSnackbar("Files uploaded", {
+          variant: "success",
+        });
+      }, 500);
     } catch (error) {
-      console.log(error);
+      if (axios.isCancel(error)) {
+        // Display a snackbar if the request was aborted
+        enqueueSnackbar("Upload cancelled", {
+          variant: "warning",
+        });
+      } else {
+        // Else if the request failed, throw an error
+        throw error;
+      }
     }
 
+    // Reset upload, percentage and selected files
     setTimeout(() => {
       setIsUploading(false);
       setPercentage(0);
-      setSelectedFiles([]);
     }, 500);
+  }
+
+  function handleRequestCancel() {
+    // Call abort method on controller to terminate the request
+    controller.abort();
+
+    // Reset controller to a new instance for the next request
+    setController(new AbortController());
   }
 
   return (
@@ -90,13 +120,19 @@ export default function FileDownloder() {
         />
       </Grid>
       <Grid item xs="auto" position={"relative"}>
-        <Fab
-          color="primary"
-          onClick={handleFilesUpload}
-          disabled={selectedFiles.length === 0 || isUploading}
-        >
-          <CloudUploadIcon />
-        </Fab>
+        {isUploading ? (
+          <Fab color="error" onClick={handleRequestCancel}>
+            <CloseIcon />
+          </Fab>
+        ) : (
+          <Fab
+            color="primary"
+            onClick={handleFilesUpload}
+            disabled={selectedFiles.length === 0}
+          >
+            <CloudUploadIcon />
+          </Fab>
+        )}
       </Grid>
       {isUploading && (
         <Grid
