@@ -25,3 +25,5 @@ yarn-debug.log*
 yarn-error.log*
 
 selenium-tester
+
+service-account.json
