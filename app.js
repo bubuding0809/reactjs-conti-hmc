@@ -8,6 +8,12 @@ const upload = multer({ dest: "uploads/" });
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var testAPIRouter = require("./routes/testAPI");
+const multerInstance = require("./middleware/multerInstance");
+const {
+  authenticateGoogle,
+  uploadToGoogleDrive,
+  deleteFile,
+} = require("./services/googleServices");
 
 var app = express();
 
@@ -30,6 +36,24 @@ app.post("/file_upload", upload.array("files"), (req, res) => {
   console.log(req.body);
   res.json({ status: "success" });
 });
+app.post(
+  "/file_upload_google",
+  multerInstance.array("files"),
+  async (req, res) => {
+    try {
+      const auth = authenticateGoogle();
+      req.files.forEach(async file => {
+        const response = await uploadToGoogleDrive(file, auth);
+        console.log(response);
+        deleteFile(file);
+      });
+      res.status(200).json({ status: "success" });
+    } catch (error) {
+      console.log(error);
+      res.json({ status: "error", error });
+    }
+  }
+);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -1,9 +1,11 @@
 import { Fab, Grid, TextField } from "@mui/material";
 import CloudDownloadSharpIcon from "@mui/icons-material/CloudDownloadSharp";
 import { useState } from "react";
+import { useSnackbar } from "notistack";
 
 export default function FileDownloder() {
   const [fileDownloadLink, setFileDownloadLink] = useState("");
+  const { enqueueSnackbar } = useSnackbar();
 
   function handleDownloadLinkChange(event) {
     const { value } = event.target;
@@ -36,6 +38,7 @@ export default function FileDownloder() {
           href={fileDownloadLink}
           download
           disabled={!fileDownloadLink}
+          onClick={() => enqueueSnackbar("Downloading...", { variant: "info" })}
         >
           <CloudDownloadSharpIcon />
         </Fab>

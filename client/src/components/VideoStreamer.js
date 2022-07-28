@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import VideoForm from "./VideoForm";
 import VideoControls from "./VideoControls";
 import ReactPlayer from "react-player";
-import { Box, duration, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 
 function VideoStreamer() {
   // Create a ref to store the video player instance

@@ -56,6 +56,7 @@ export default function FileDownloder() {
     try {
       const response = await axios.post(destApi, data, options);
       setTimeout(() => {
+        console.log(response.data);
         setSelectedFiles([]);
         enqueueSnackbar("Files uploaded", {
           variant: "success",
@@ -69,7 +70,10 @@ export default function FileDownloder() {
         });
       } else {
         // Else if the request failed, throw an error
-        throw error;
+        console.log(error);
+        enqueueSnackbar(error.message, {
+          variant: "error",
+        });
       }
     }
 
