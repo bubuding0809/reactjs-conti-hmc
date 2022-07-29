@@ -13,9 +13,11 @@ import {
   FormLabel,
   FormGroup,
   Slider,
+  Typography,
 } from "@mui/material";
 
 export default function VideoControls({
+  playerRef,
   playerState,
   toggleVideoLoop,
   toggleVideoMute,
@@ -32,6 +34,12 @@ export default function VideoControls({
     minHeight: "30px",
   };
 
+  function formatDuration(value) {
+    const minute = Math.floor(value / 60);
+    const secondLeft = Math.round(value - minute * 60);
+    return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
+  }
+
   return (
     <Grid
       sx={{
@@ -41,9 +49,11 @@ export default function VideoControls({
         py: 1,
       }}
       container
-      justifyContent={"space-between"}
+      justifyContent={"flex-start"}
       alignItems={"center"}
+      columnGap={1}
     >
+      {/* Video play pause buttons */}
       <Grid container item xs="auto" mr={2} columnSpacing={1}>
         <Grid item xs>
           <Button
@@ -70,6 +80,7 @@ export default function VideoControls({
           </Button>
         </Grid>
       </Grid>
+      {/* Video Control switches */}
       <Grid item xs="auto">
         <FormControl>
           <FormLabel>Controls</FormLabel>
@@ -111,12 +122,25 @@ export default function VideoControls({
           </FormGroup>
         </FormControl>
       </Grid>
-      <Grid item container xs>
+      {/* Video timing */}
+      <Grid item xs="auto">
+        <Typography minWidth={30} variant="body2" color={"text.secondary"}>
+          {`${formatDuration(playerState.played)} / ${formatDuration(
+            playerState.duration
+          )}`}
+        </Typography>
+      </Grid>
+      {/* Video seeker slider */}
+      <Grid item container sm xs={12} alignItems="center">
         <Slider
+          size="small"
           value={playerState.played}
+          min={0}
+          max={playerState.duration}
           onMouseDown={handleSeekStart}
           onChange={handleSeekChange}
           onChangeCommitted={handleSeekCommitted}
+          valueLabelDisplay="auto"
         />
       </Grid>
     </Grid>

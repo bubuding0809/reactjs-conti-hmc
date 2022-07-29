@@ -27,3 +27,7 @@ yarn-error.log*
 selenium-tester
 
 service-account.json
+
+uploads
+uploads/
+/uploads

@@ -12,15 +12,15 @@ const {
 // setup multer instance configuration
 const upload = multer({
   storage: multer.diskStorage({
-    destination: function (req, file, callback) {
-      callback(null, `${__dirname}/temp`);
+    destination: (req, file, callback) => {
+      callback(null, `${process.cwd()}/uploads`);
     },
-    filename: function (req, file, callback) {
+    filename: (req, file, callback) => {
       callback(null, Date.now() + "_" + file.originalname);
     },
   }),
   limits: {
-    fileSize: 5 * 1024 * 1024,
+    fileSize: 50 * 1024 * 1024,
   },
 });
 

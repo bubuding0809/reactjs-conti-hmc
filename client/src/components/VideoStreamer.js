@@ -22,6 +22,7 @@ function VideoStreamer() {
     loop: true,
     playbackRate: 1,
     seeking: false,
+    duration: 0,
   });
 
   // Create state to store previous player state
@@ -51,19 +52,25 @@ function VideoStreamer() {
     },
     width: "100%",
     height: "100%",
-    onEnded: () => {
+    onDuration: duration => {
       setPlayerState(prevState => ({
         ...prevState,
-        playing: prevState.loop,
+        duration: duration,
       }));
     },
     onProgress: state => {
       if (!playerState.seeking) {
         setPlayerState(prevState => ({
           ...prevState,
-          played: state.played * 100,
+          played: state.playedSeconds,
         }));
       }
+    },
+    onEnded: () => {
+      setPlayerState(prevState => ({
+        ...prevState,
+        playing: prevState.loop,
+      }));
     },
   };
 
@@ -110,8 +117,7 @@ function VideoStreamer() {
       }));
     },
     handleSeekCommitted: (e, value) => {
-      console.log(e);
-      playerRef.current.seekTo(parseFloat(value) / 100, "fraction");
+      playerRef.current.seekTo(parseFloat(value));
       setPlayerState(prevState => ({
         ...prevState,
         seeking: false,
