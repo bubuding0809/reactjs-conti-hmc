@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 
 export default function VideoControls({
-  playerRef,
   playerState,
   toggleVideoLoop,
   toggleVideoMute,
