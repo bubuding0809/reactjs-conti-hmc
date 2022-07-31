@@ -1,10 +1,12 @@
-import { Fab, Grid, TextField } from "@mui/material";
+import { Fab, Grid, TextField, Typography } from "@mui/material";
 import CloudDownloadSharpIcon from "@mui/icons-material/CloudDownloadSharp";
 import { useState } from "react";
 import { useSnackbar } from "notistack";
 
 export default function FileDownloder() {
-  const [fileDownloadLink, setFileDownloadLink] = useState("");
+  const [fileDownloadLink, setFileDownloadLink] = useState(
+    "http://localhost:3001/file_download/bunny1080p.mp4"
+  );
   const { enqueueSnackbar } = useSnackbar();
 
   function handleDownloadLinkChange(event) {
@@ -14,6 +16,7 @@ export default function FileDownloder() {
 
   return (
     <Grid
+      rowGap={1}
       container
       justifyContent="space-around"
       alignItems="center"
@@ -21,6 +24,9 @@ export default function FileDownloder() {
       p={2}
       backgroundColor={"#f5f5f5"}
     >
+      <Grid item container justifyContent="center" xs={12}>
+        <Typography variant="body1">File downloader</Typography>
+      </Grid>
       <Grid item xs mr={2}>
         <TextField
           id="file-download-field"

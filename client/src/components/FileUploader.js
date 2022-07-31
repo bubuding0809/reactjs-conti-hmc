@@ -13,7 +13,7 @@ import axios from "axios";
 import FileInput from "./FileInput";
 
 export default function FileDownloder() {
-  const [destApi, setDestApi] = useState("/file_upload");
+  const [destApi, setDestApi] = useState("http://localhost:3000/file_upload");
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [percentage, setPercentage] = useState(0);
@@ -102,6 +102,7 @@ export default function FileDownloder() {
       backgroundColor={"#f5f5f5"}
       rowGap={1}
     >
+      <Typography variant="body1">File Uploader</Typography>
       <Grid item xs={12}>
         <FileInput
           id="test-file-upload"
