@@ -19,7 +19,7 @@ router.get("/", (req, res) => {
     return;
   }
 
-  const videoPath = `${process.cwd()}/uploads/${video}`;
+  const videoPath = `${process.cwd()}/public/uploads/${video}`;
 
   // check if video file exists
   var videoSize;

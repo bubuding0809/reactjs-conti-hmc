@@ -3,8 +3,11 @@ import VideoForm from "./VideoForm";
 import VideoControls from "./VideoControls";
 import ReactPlayer from "react-player";
 import { Box, Stack } from "@mui/material";
+import { useSnackbar } from "notistack";
 
 function VideoStreamer() {
+  const { enqueueSnackbar } = useSnackbar();
+
   // Create a ref to store the video player instance
   const playerRef = useRef();
 
@@ -23,6 +26,7 @@ function VideoStreamer() {
     playbackRate: 1,
     seeking: false,
     duration: 0,
+    playsinline: true,
   });
 
   // Create state to store previous player state
@@ -52,6 +56,16 @@ function VideoStreamer() {
     },
     width: "100%",
     height: "100%",
+    onReady: player => {
+      enqueueSnackbar("Successfully loaded video", {
+        variant: "success",
+      });
+      console.log("onReady", player);
+    },
+    onError: error => {
+      enqueueSnackbar("Error loading video", { variant: "error" });
+      console.log("onError", error);
+    },
     onDuration: duration => {
       setPlayerState(prevState => ({
         ...prevState,

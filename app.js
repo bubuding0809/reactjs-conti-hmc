@@ -22,6 +22,9 @@ var usersRouter = require("./routes/users");
 var fileUploadRouter = require("./routes/file_upload");
 var fileUploadGoogleRouter = require("./routes/file_upload_google");
 var videoStreamerRouter = require("./routes/video_streamer");
+var fileDownloadRouter = require("./routes/file_download");
+var twilioMessageRouter = require("./routes/twilio_message");
+var twilioVoiceRouter = require("./routes/twilio_voice");
 
 // Routes
 app.use("/", indexRouter);
@@ -29,6 +32,9 @@ app.use("/users", usersRouter);
 app.use("/file_upload_google", fileUploadGoogleRouter);
 app.use("/file_upload", fileUploadRouter);
 app.use("/video_streamer", videoStreamerRouter);
+app.use("/file_download", fileDownloadRouter);
+app.use("/twilio_message", twilioMessageRouter);
+app.use("/twilio_voice", twilioVoiceRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

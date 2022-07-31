@@ -95,12 +95,12 @@ export default function FileDownloder() {
   return (
     <Grid
       container
-      rowSpacing={0}
       justifyContent="space-around"
       alignItems="flex-end"
       borderRadius={2}
       p={2}
       backgroundColor={"#f5f5f5"}
+      rowGap={1}
     >
       <Grid item xs={12}>
         <FileInput
@@ -117,7 +117,6 @@ export default function FileDownloder() {
         <TextField
           label="Destination API"
           variant="outlined"
-          sx={{ mt: 1 }}
           fullWidth
           value={destApi}
           onChange={event => setDestApi(event.target.value)}

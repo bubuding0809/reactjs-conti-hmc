@@ -4,7 +4,7 @@ const multer = require("multer");
 const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, callback) => {
-      callback(null, `${process.cwd()}/uploads`);
+      callback(null, `${process.cwd()}/public/uploads`);
     },
     filename: (req, file, callback) => {
       callback(null, Date.now() + "_" + file.originalname);
