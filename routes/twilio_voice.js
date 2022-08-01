@@ -60,7 +60,7 @@ router.post("/voice", (req, res) => {
   // If the request to the /voice endpoint is TO your Twilio Number,
   // then it is an incoming call towards your Twilio.Device.
   if (reciever === callerId) {
-    console.log("Incoming call from " + reciever);
+    console.log("Incoming call from " + reciever + " to " + identity);
     const dial = response.dial();
 
     dial.client(identity);

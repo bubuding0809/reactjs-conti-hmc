@@ -35,7 +35,6 @@ export default function VoiceCaller() {
       const response = await axios.get("/twilio_voice/token");
       console.log("Got access token");
       const token = response.data.token;
-      console.log(response);
 
       // Display client name on UI
       setClientIdentity(response.data.identity);
@@ -96,7 +95,6 @@ export default function VoiceCaller() {
     );
     call.on("disconnect", () => {
       console.log("Call disconnected");
-      callDevice.destroy();
       setCallDevice(null);
       setCallInstance(null);
       setIsDeviceReady(false);
@@ -220,7 +218,7 @@ export default function VoiceCaller() {
             }}
             color="primary"
             variant="determinate"
-            value={callAudio.outputVol * 100}
+            value={callAudio.inputVol * 100}
           />
         </Grid>
       </Grid>
@@ -236,7 +234,7 @@ export default function VoiceCaller() {
             }}
             color="secondary"
             variant="determinate"
-            value={callAudio.inputVol * 100}
+            value={callAudio.outputVol * 100}
           />
         </Grid>
       </Grid>
