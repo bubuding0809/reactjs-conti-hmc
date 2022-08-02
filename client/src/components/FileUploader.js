@@ -22,14 +22,14 @@ export default function FileDownloder() {
 
   function handleFileChange(event) {
     const files = [...event.target.files];
-    setSelectedFiles(prevstate => [...prevstate, ...files]);
+    setSelectedFiles((prevstate) => [...prevstate, ...files]);
   }
 
   async function handleFilesUpload() {
     // Configure axios post options
     const options = {
       signal: controller.signal,
-      onUploadProgress: progressEvent => {
+      onUploadProgress: (progressEvent) => {
         const { loaded, total } = progressEvent;
 
         const percentCompleted = Math.round(
@@ -42,7 +42,7 @@ export default function FileDownloder() {
 
     // Create form data and append selected files to it
     const data = new FormData();
-    selectedFiles.forEach(file => {
+    selectedFiles.forEach((file) => {
       data.append("files", file);
     });
 
@@ -105,7 +105,7 @@ export default function FileDownloder() {
       <Typography variant="body1">File Uploader</Typography>
       <Grid item xs={12}>
         <FileInput
-          id="test-file-upload"
+          id="file-upload-input"
           multiple={true}
           onChange={handleFileChange}
           onClear={() => setSelectedFiles([])}
@@ -116,11 +116,12 @@ export default function FileDownloder() {
       </Grid>
       <Grid item xs mr={2} mt={1}>
         <TextField
+          id="file-upload-field"
           label="Destination API"
           variant="outlined"
           fullWidth
           value={destApi}
-          onChange={event => setDestApi(event.target.value)}
+          onChange={(event) => setDestApi(event.target.value)}
         />
       </Grid>
       <Grid item xs="auto" position={"relative"}>
@@ -130,6 +131,7 @@ export default function FileDownloder() {
           </Fab>
         ) : (
           <Fab
+            id="file-upload-button"
             color="primary"
             onClick={handleFilesUpload}
             disabled={selectedFiles.length === 0}

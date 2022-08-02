@@ -6,6 +6,7 @@ import YoutubeSearchedForIcon from "@mui/icons-material/YoutubeSearchedFor";
 function VideoForm({ playerUrl, setPlayerUrl, handleLoad }) {
   return (
     <TextField
+      id="video-url-input"
       name="videoUrl"
       type="text"
       label="Video URL"

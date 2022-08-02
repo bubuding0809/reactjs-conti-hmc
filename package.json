@@ -5,7 +5,7 @@
   "scripts": {
     "dev-start": "concurrently \"nodemon ./bin/www\" \"npm run client\"",
     "start": "concurrently \"node ./bin/www\" \"npm run client\"",
-    "start-server": "node ./bin/www",
+    "start-server": "nodemon ./bin/www",
     "client": "node start-client.js"
   },
   "dependencies": {

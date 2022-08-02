@@ -54,6 +54,7 @@ export default function VideoControls({
     >
       {/* Video play pause buttons */}
       <Grid container item xs="auto" mr={2} columnSpacing={1}>
+        {/* Play button */}
         <Grid item xs>
           <Button
             sx={buttonStyle}
@@ -66,6 +67,7 @@ export default function VideoControls({
             <PlayArrowIcon />
           </Button>
         </Grid>
+        {/* Pause button */}
         <Grid item xs>
           <Button
             sx={buttonStyle}
@@ -90,6 +92,7 @@ export default function VideoControls({
               }}
               control={
                 <Switch
+                  id="video-loop-switch"
                   size="small"
                   checked={playerState.loop}
                   onChange={toggleVideoLoop}
@@ -105,6 +108,7 @@ export default function VideoControls({
               }}
               control={
                 <Switch
+                  id="video-mute-switch"
                   size="small"
                   checked={!playerState.muted}
                   onChange={toggleVideoMute}
@@ -130,8 +134,27 @@ export default function VideoControls({
         </Typography>
       </Grid>
       {/* Video seeker slider */}
-      <Grid item container sm xs={12} alignItems="center">
-        <Slider
+      <Grid
+        item
+        sm
+        xs={12}
+        container
+        alignItems="center"
+        justifyContent={"center"}
+      >
+        <input
+          className="input-slider"
+          id="video-seek-input"
+          type="range"
+          value={playerState.played}
+          min={0}
+          max={playerState.duration}
+          onMouseDown={handleSeekStart}
+          onChange={handleSeekChange}
+          onMouseUp={handleSeekCommitted}
+        />
+        {/* <Slider
+          className="video-seek-input"
           size="small"
           value={playerState.played}
           min={0}
@@ -140,7 +163,7 @@ export default function VideoControls({
           onChange={handleSeekChange}
           onChangeCommitted={handleSeekCommitted}
           valueLabelDisplay="auto"
-        />
+        /> */}
       </Grid>
     </Grid>
   );

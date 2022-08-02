@@ -5,7 +5,7 @@ import { useSnackbar } from "notistack";
 
 export default function FileDownloder() {
   const [fileDownloadLink, setFileDownloadLink] = useState(
-    "http://localhost:3001/file_download/bunny1080p.mp4"
+    "https://igd8042n/cosmastream/ppt/TOYOTA_DCM_ATP_Architecture_Demo.pptx"
   );
   const { enqueueSnackbar } = useSnackbar();
 

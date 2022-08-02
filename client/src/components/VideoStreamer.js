@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import VideoForm from "./VideoForm";
 import VideoControls from "./VideoControls";
 import ReactPlayer from "react-player";
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Grid } from "@mui/material";
 import { useSnackbar } from "notistack";
 
 function VideoStreamer() {
@@ -37,7 +37,7 @@ function VideoStreamer() {
     playerUrl,
     setPlayerUrl,
     handleLoad: () => {
-      setPlayerState(prevState => ({
+      setPlayerState((prevState) => ({
         ...prevState,
         url: playerUrl,
       }));
@@ -56,32 +56,32 @@ function VideoStreamer() {
     },
     width: "100%",
     height: "100%",
-    onReady: player => {
+    onReady: (player) => {
       enqueueSnackbar("Successfully loaded video", {
         variant: "success",
       });
       console.log("onReady", player);
     },
-    onError: error => {
+    onError: (error) => {
       enqueueSnackbar("Error loading video", { variant: "error" });
       console.log("onError", error);
     },
-    onDuration: duration => {
-      setPlayerState(prevState => ({
+    onDuration: (duration) => {
+      setPlayerState((prevState) => ({
         ...prevState,
         duration: duration,
       }));
     },
-    onProgress: state => {
+    onProgress: (state) => {
       if (!playerState.seeking) {
-        setPlayerState(prevState => ({
+        setPlayerState((prevState) => ({
           ...prevState,
           played: state.playedSeconds,
         }));
       }
     },
     onEnded: () => {
-      setPlayerState(prevState => ({
+      setPlayerState((prevState) => ({
         ...prevState,
         playing: prevState.loop,
       }));
@@ -93,46 +93,46 @@ function VideoStreamer() {
     playerRef,
     playerState,
     toggleVideoLoop: () => {
-      setPlayerState(prevState => ({
+      setPlayerState((prevState) => ({
         ...prevState,
         loop: !prevState.loop,
       }));
     },
     toggleVideoMute: () => {
-      setPlayerState(prevState => ({
+      setPlayerState((prevState) => ({
         ...prevState,
         muted: !prevState.muted,
       }));
     },
     handleVideoPlay: () => {
-      setPlayerState(prevState => ({
+      setPlayerState((prevState) => ({
         ...prevState,
         playing: true,
       }));
     },
     handleVideoPause: () => {
-      setPlayerState(prevState => ({
+      setPlayerState((prevState) => ({
         ...prevState,
         playing: false,
       }));
     },
-    handleSeekStart: e => {
+    handleSeekStart: (e) => {
       setPrevPlaying(playerState.playing);
-      setPlayerState(prevState => ({
+      setPlayerState((prevState) => ({
         ...prevState,
         seeking: true,
         playing: false,
       }));
     },
-    handleSeekChange: e => {
-      setPlayerState(prevState => ({
+    handleSeekChange: (e) => {
+      setPlayerState((prevState) => ({
         ...prevState,
         played: parseFloat(e.target.value),
       }));
     },
     handleSeekCommitted: (e, value) => {
-      playerRef.current.seekTo(parseFloat(value));
-      setPlayerState(prevState => ({
+      playerRef.current.seekTo(parseFloat(e.target.value));
+      setPlayerState((prevState) => ({
         ...prevState,
         seeking: false,
         playing: prevPlaying,

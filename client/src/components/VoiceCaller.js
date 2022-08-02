@@ -12,7 +12,6 @@ import CallIcon from "@mui/icons-material/Call";
 import CallEndIcon from "@mui/icons-material/CallEnd";
 import MicIcon from "@mui/icons-material/Mic";
 import PhoneInTalkIcon from "@mui/icons-material/PhoneInTalk";
-import WifiCalling3Icon from "@mui/icons-material/WifiCalling3";
 import axios from "axios";
 
 export default function VoiceCaller() {
