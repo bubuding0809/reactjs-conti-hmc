@@ -35,7 +35,6 @@ export default function VoiceCaller() {
       const response = await axios.get("/twilio_voice/token");
       console.log("Got access token");
       const token = response.data.token;
-      console.log(response);
 
       // Display client name on UI
       setClientIdentity(response.data.identity);
@@ -49,7 +48,6 @@ export default function VoiceCaller() {
         // providing better audio quality in restrained network conditions.
         codecPreferences: ["opus", "pcmu"],
       });
-      console.log(device);
       // Add listeners for device events
       addDeviceListeners(device);
 
@@ -71,10 +69,10 @@ export default function VoiceCaller() {
     device.on("registered", () =>
       console.log("The device is ready to receive incoming calls.")
     );
-    device.on("error", error => {
+    device.on("error", (error) => {
       console.log("Twilio.Device Error: " + error);
     });
-    device.on("incoming", call => {
+    device.on("incoming", (call) => {
       console.log(call);
       console.log(`Incoming call from ${call.parameters.From}`);
       setIsIncomingCall(true);
@@ -90,7 +88,7 @@ export default function VoiceCaller() {
     call.on("accept", () => console.log("Call connected"));
     call.on("cancel", () => console.log("Call cancelled"));
     call.on("reject", () => console.log("Call rejected."));
-    call.on("error", error => console.log("Call error", error));
+    call.on("error", (error) => console.log("Call error", error));
     call.on("volume", (inputVol, outputVol) =>
       setCallAudio({ inputVol, outputVol })
     );
@@ -190,7 +188,7 @@ export default function VoiceCaller() {
         <TextField
           label="Number / Client"
           variant="outlined"
-          onChange={e => setPhoneNumber(e.target.value)}
+          onChange={(e) => setPhoneNumber(e.target.value)}
           fullWidth
         />
       </Grid>
