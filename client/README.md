@@ -2,6 +2,114 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Requirements
+
+1. NodeJS
+2. NPM
+
+## Installation of NodeJS and NPM
+
+1. Download the installler from [NodeJS website](https://nodejs.org/en/).
+2. Run the installer.
+3. Restart your system for installation to take effect
+4. Check installation with the following commands:
+   ```
+   $ node -v
+   ```
+   ```
+   $ npm -v
+   ```
+   <img src="./images/check-installation.png" alt="installation check"/>
+   You are done with the installation.
+
+## Installing the project dependencies
+
+1. Navigate to project root after cloning repository
+   ```
+   $ cd conti-hmc-client
+   ```
+2. In the [package.json](./package.json), all required packages are stated under the dependencies object
+
+   ```
+   {
+      "name": "reactjs-conti-hmc",
+      "version": "0.1.0",
+      "private": true,
+      "proxy": "http://localhost:3001/",
+      "homepage": "http://www.hmc-react-app.com",
+      "dependencies": {
+         "@emotion/react": "^11.9.3",
+         "@emotion/styled": "^11.9.3",
+         "@fontsource/roboto": "^4.5.7",
+         "@mui/icons-material": "^5.8.4",
+         "@mui/material": "^5.9.0",
+         "@mui/system": "^5.9.0",
+         "@testing-library/jest-dom": "^5.16.4",
+         "@testing-library/react": "^13.3.0",
+         "@testing-library/user-event": "^13.5.0",
+         "@twilio/voice-sdk": "^2.0.1",
+         "axios": "^0.27.2",
+         "nanoid": "^4.0.0",
+         "notistack": "^2.0.5",
+         "react": "^18.2.0",
+         "react-dom": "^18.2.0",
+         "react-player": "^2.10.1",
+         "react-scripts": "5.0.1",
+         "react-window": "^1.8.7",
+         "util": "^0.12.4",
+         "web-vitals": "^2.1.4"
+      },
+      "scripts": {
+         "start": "react-scripts start",
+         "build": "react-scripts build",
+         "test": "react-scripts test",
+         "eject": "react-scripts eject"
+      },
+      ...
+   }
+   ```
+
+   To install dependencies, run the following command in the project root
+
+   ```
+   $ npm install
+   ```
+
+## Develop, build, deploy
+
+To run the project in development mode
+
+```
+$ npm start
+```
+
+To build project for deployment
+
+```
+$ npm run build
+```
+
+To deploy to locally, for environments using Node, the easiest way to handle this would be to install serve and let it handle the rest:
+
+```
+$ npm install -g serve
+$ serve -s build
+```
+
+The last command shown above will serve your static site on the port 3000. Like many of serve’s internal settings, the port can be adjusted using the -l or --listen flags:
+
+```
+serve -s build -l 4000
+```
+
+Run this command to get a full list of the options available:
+
+```
+serve -h
+```
+
+To deploy on **XAMPP**, follow this [guide](https://medium.com/@nutanbhogendrasharma/create-simple-reactjs-application-and-host-in-xampp-4dae8e466c50)
+
 ## Available Scripts
 
 In the project directory, you can run:
